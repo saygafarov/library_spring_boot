@@ -1,6 +1,7 @@
 package ru.saygafarov.ProgectBoot.controller;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -10,22 +11,21 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.saygafarov.ProgectBoot.model.Person;
 import ru.saygafarov.ProgectBoot.security.PersonDetails;
+import ru.saygafarov.ProgectBoot.services.AdminService;
 import ru.saygafarov.ProgectBoot.services.PeopleService;
 import ru.saygafarov.ProgectBoot.util.PersonValidator;
 
 
 @Controller
 @RequestMapping("/people")
+@RequiredArgsConstructor
 public class PeopleController {
 
     private final PeopleService peopleService;
 
-    private final PersonValidator personValidator;
+    private final AdminService adminService;
 
-    public PeopleController(PeopleService peopleService, PersonValidator personValidator) {
-        this.peopleService = peopleService;
-        this.personValidator = personValidator;
-    }
+    private final PersonValidator personValidator;
 
     @GetMapping()
     public String index(Model model) {
@@ -88,5 +88,12 @@ public class PeopleController {
         System.out.println(personDetails.getPerson());
 
         return "redirect:/people";
+    }
+
+    @GetMapping("/admin")
+    public String adminPage() {
+        adminService.doAdminStuff();
+
+        return "people/admin";
     }
 }
