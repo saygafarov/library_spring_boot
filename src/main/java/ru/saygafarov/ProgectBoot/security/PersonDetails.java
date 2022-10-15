@@ -3,10 +3,12 @@ package ru.saygafarov.ProgectBoot.security;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import ru.saygafarov.ProgectBoot.model.Person;
 
 import java.util.Collection;
+import java.util.Collections;
 
 @RequiredArgsConstructor
 @Getter
@@ -16,7 +18,7 @@ public class PersonDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return Collections.singletonList(new SimpleGrantedAuthority(person.getRole()));
     }
 
     @Override
